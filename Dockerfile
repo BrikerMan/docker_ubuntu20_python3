@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 
-MAINTAINER BrikerMan "<https://eliyar.biz>"
+ARG PYTHON_VERSION=3.8.0
+ARG LINK_PYTHON_TO_PYTHON3=1
 
 USER root
 WORKDIR /root
@@ -41,9 +42,6 @@ RUN apt-get -qq -y update && \
     apt-get -y autoclean && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt-get/lists/*
-
-ARG PYTHON_VERSION=3.8.0
-ARG LINK_PYTHON_TO_PYTHON3=1
 
 COPY install_python.sh install_python.sh
 RUN bash install_python.sh ${PYTHON_VERSION} ${LINK_PYTHON_TO_PYTHON3} && \

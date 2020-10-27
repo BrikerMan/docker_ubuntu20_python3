@@ -98,7 +98,7 @@ function main() {
     # 2: bool of if should symlink python and pip to python3 versions
 
     PYTHON_VERSION=3.8.0
-    LINK_PYTHON_TO_PYTHON3=0 # By default don't link so as to reserve python for Python 2
+    LINK_PYTHON_TO_PYTHON3=1 # By default don't link so as to reserve python for Python 2
     if [[ $# -gt 0 ]]; then
         PYTHON_VERSION="${1}"
 
