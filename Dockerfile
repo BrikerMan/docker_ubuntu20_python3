@@ -27,6 +27,7 @@ RUN apt-get -qq -y update && \
     libffi-dev \
     tk-dev \
     wget \
+    gawk \
     curl \
     git \
     make \
