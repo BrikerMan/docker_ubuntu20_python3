@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "Start build python image with tag ${DOCKER_TAG}"
-docker build . --build-arg PYTHON_VERSION="$DOCKER_TAG -t ${IMAGE_NAME}
+echo "Start build python image wiht tag: ${DOCKER_TAG}"
+docker build . --build-arg PYTHON_VERSION="$DOCKER_TAG" -t ${IMAGE_NAME}

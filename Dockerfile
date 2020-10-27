@@ -1,8 +1,5 @@
 FROM ubuntu:20.04
 
-ARG PYTHON_VERSION=3.8.0
-ARG LINK_PYTHON_TO_PYTHON3=1
-
 USER root
 WORKDIR /root
 
@@ -43,9 +40,12 @@ RUN apt-get -qq -y update && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt-get/lists/*
 
+ARG PYTHON_VERSION=3.8.0
+ARG LINK_PYTHON_TO_PYTHON3=1
+
 COPY install_python.sh install_python.sh
 RUN bash install_python.sh ${PYTHON_VERSION} ${LINK_PYTHON_TO_PYTHON3} && \
-    rm -r install_python.sh Python-${PYTHON_VERSION}
+    rm -r install_python.sh Python-*
 
 # Enable tab completion by uncommenting it from /etc/bash.bashrc
 # The relevant lines are those below the phrase "enable bash completion in interactive shells"

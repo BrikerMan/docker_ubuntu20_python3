@@ -5,7 +5,7 @@ set -e
 # This is being run as root and so sudo is not needed
 # This is for get the latest version for 
 function check_version() {
-    echo $1
+    echo "Original Python version: ${PYTHON_VERSION}"
     if [[ $1 =~ ^[0-9]\.[0-9]$ ]]; then
         latest_version=`curl -is https://www.python.org/downloads/ | 
             awk 'match($0, /Python [0-9]\.[0-9]{1,2}\.[0-9]{1,2}/) {print substr($0, RSTART+7, RLENGTH-7)}' |
@@ -17,9 +17,13 @@ function check_version() {
         latest_version=`curl -is https://www.python.org/downloads/ | 
             awk 'match($0, /Python [0-9]\.[0-9]{1,2}\.[0-9]{1,2}/) {print substr($0, RSTART+7, RLENGTH-7)}' |
             sort | grep '3.' | tail -n 1`
+        echo "NEW: $latest_version"
+        echo `curl -is https://www.python.org/downloads/ | 
+            awk 'match($0, /Python [0-9]\.[0-9]{1,2}\.[0-9]{1,2}/) {print substr($0, RSTART+7, RLENGTH-7)}' |
+            sort | grep '3.' | tail -n 1`
         PYTHON_VERSION=$latest_version
     fi
-    echo "Final Python version is ${PYTHON_VERSION}"
+    echo "Final Python version: ${PYTHON_VERSION}"
 }
 
 function download_cpython () {
@@ -124,7 +128,8 @@ function main() {
             LINK_PYTHON_TO_PYTHON3="${2}"
         fi
     fi
-
+    
+    check_version $PYTHON_VERSION
     NPROC="$(set_num_processors)"
     download_cpython "${PYTHON_VERSION}"
     cd Python-"${PYTHON_VERSION}"
