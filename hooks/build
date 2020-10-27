@@ -1,10 +1,4 @@
 #!/bin/bash
 
-PYTHON_VERSION=$DOCKER_TAG
-
-if [ $DOCKER_TAG == "latest" ]
-then
-  docker build . --build-arg PYTHON_VERSION="3.9.0" -t ${IMAGE_NAME}
-else
-  docker build . --build-arg PYTHON_VERSION=${PYTHON_VERSION} -t ${IMAGE_NAME}
-fi
+echo "Start build python image with tag ${DOCKER_TAG}"
+docker build . --build-arg PYTHON_VERSION="$DOCKER_TAG -t ${IMAGE_NAME}
