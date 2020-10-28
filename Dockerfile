@@ -1,13 +1,18 @@
 FROM ubuntu:20.04
 
+ARG DEBIAN_FRONTEND="noninteractive"
+
+# set the variables as per $(pyenv init -)
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    LC_ALL="C.UTF-8" \
+    PATH="/opt/pyenv/shims:/opt/pyenv/bin:$PATH" \
+    PYENV_ROOT="/opt/pyenv" \
+    PYENV_SHELL="bash"
+
 USER root
-WORKDIR /root
+WORKDIR /code
 
-SHELL [ "/bin/bash", "-c" ]
-
-# Existing lsb_release causes issues with modern installations of Python3
-# https://github.com/pypa/pip/issues/4924#issuecomment-435825490
-# Set (temporarily) DEBIAN_FRONTEND to avoid interacting with tzdata
 RUN apt-get -qq -y update && \
     apt-get -qq -y upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get -qq -y install \
@@ -41,20 +46,12 @@ RUN apt-get -qq -y update && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt-get/lists/*
 
-ARG PYTHON_VERSION=3.8.0
-ARG LINK_PYTHON_TO_PYTHON3=1
+ARG PYTHON_VERSION="3.8.6"
+RUN curl https://pyenv.run | bash
 
-COPY install_python.sh install_python.sh
-RUN bash install_python.sh ${PYTHON_VERSION} ${LINK_PYTHON_TO_PYTHON3} && \
-    rm -r install_python.sh Python-*
-
-# Enable tab completion by uncommenting it from /etc/bash.bashrc
-# The relevant lines are those below the phrase "enable bash completion in interactive shells"
-RUN export SED_RANGE="$(($(sed -n '\|enable bash completion in interactive shells|=' /etc/bash.bashrc)+1)),$(($(sed -n '\|enable bash completion in interactive shells|=' /etc/bash.bashrc)+7))" && \
-    sed -i -e "${SED_RANGE}"' s/^#//' /etc/bash.bashrc && \
-    unset SED_RANGE
-
-ENV LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8
+RUN pyenv update \
+    && pyenv install $PYTHON_VERSION \
+    && pyenv virtualenv $PYTHON_VERSION general \
+    && pyenv global general
 
 CMD [ "/bin/bash" ]
