@@ -1,8 +1,8 @@
-# Ubuntu 20.04 Python 3.6
+# Ubuntu 20.04 Python 3
 
 Clean python 3 on ubuntu 20.04. Use for python API project and ML projecrs.
 
-[Docker Hub](https://hub.docker.com/r/brikerman/ubuntu20_python3.6)
+[Docker Hub](https://hub.docker.com/r/brikerman/ubuntu20_python3)
 
 * installed python 3.x environments
 
